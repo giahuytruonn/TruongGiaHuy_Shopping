@@ -53,6 +53,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/", "/home", "/login", "/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                        .requestMatchers("/chat", "/chat/**").permitAll()
+                        .requestMatchers("/product", "/product/", "/product/{id}", "/product/*").permitAll()
+                        .requestMatchers("/product/add", "/product/edit/**", "/product/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/comment/add", "/comment/edit/**", "/comment/delete/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers("/order/**", "/cart/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService())
