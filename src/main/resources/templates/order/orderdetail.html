@@ -1,168 +1,170 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8" />
-  <title>Order Detail</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>Order Detail</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+      }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 30px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
 
-    h1 {
-      color: #ff5722;
-      text-align: center;
-      margin-bottom: 20px;
-    }
+      h1 {
+        color: #ff5722;
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-    .back-link {
-      display: inline-block;
-      margin-bottom: 20px;
-      padding: 10px 20px;
-      background-color: #ff5722;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: 500;
-    }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        background-color: #ff5722;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 500;
+      }
 
-    .back-link:hover {
-      background-color: #e64a19;
-    }
+      .back-link:hover {
+        background-color: #e64a19;
+      }
 
-    .order-info {
-      background-color: #fff7f3;
-      border: 1px solid #ffe0d5;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 25px;
-    }
+      .order-info {
+        background-color: #fff7f3;
+        border: 1px solid #ffe0d5;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+      }
 
-    .order-info p {
-      margin: 8px 0;
-      color: #333;
-      font-size: 15px;
-    }
+      .order-info p {
+        margin: 8px 0;
+        color: #333;
+        font-size: 15px;
+      }
 
-    .order-info strong {
-      color: #ff5722;
-    }
+      .order-info strong {
+        color: #ff5722;
+      }
 
-    .order-lines {
-      margin-top: 20px;
-    }
+      .order-lines {
+        margin-top: 20px;
+      }
 
-    .order-lines h3 {
-      color: #ff5722;
-      margin-bottom: 15px;
-    }
+      .order-lines h3 {
+        color: #ff5722;
+        margin-bottom: 15px;
+      }
 
-    .order-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-      border: 1px solid #ffe0d5;
-      border-left: 5px solid #ff5722;
-      border-radius: 5px;
-      background-color: #fff8f6;
-      transition: box-shadow 0.2s ease;
-    }
+      .order-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        border: 1px solid #ffe0d5;
+        border-left: 5px solid #ff5722;
+        border-radius: 5px;
+        background-color: #fff8f6;
+        transition: box-shadow 0.2s ease;
+      }
 
-    .order-line:hover {
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    }
+      .order-line:hover {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      }
 
-    .product-info {
-      flex: 1;
-    }
+      .product-info {
+        flex: 1;
+      }
 
-    .product-name {
-      font-weight: bold;
-      color: #333;
-      font-size: 15px;
-    }
+      .product-name {
+        font-weight: bold;
+        color: #333;
+        font-size: 15px;
+      }
 
-    .product-details {
-      font-size: 14px;
-      color: #666;
-    }
+      .product-details {
+        font-size: 14px;
+        color: #666;
+      }
 
-    .product-total {
-      font-weight: bold;
-      color: #ff5722;
-      font-size: 15px;
-      margin-left: 20px;
-    }
+      .product-total {
+        font-weight: bold;
+        color: #ff5722;
+        font-size: 15px;
+        margin-left: 20px;
+      }
 
-    .empty-state {
-      text-align: center;
-      color: #999;
-      font-style: italic;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-<div class="container">
-  <a href="/order" class="back-link">← Back to Orders</a>
+      .empty-state {
+        text-align: center;
+        color: #999;
+        font-style: italic;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/order" class="back-link">← Back to Orders</a>
 
-  <h1>Order Detail</h1>
+      <h1>Order Detail</h1>
 
-  <div class="order-info">
-    <p th:text="'Order ID: ' + ${order.id}"></p>
-    <p>
-      <strong>Date:</strong>
-      <span
-              th:if="${order.date != null}"
-              th:text="${#dates.format(order.date.time, 'dd/MM/yyyy HH:mm')}"
-      >Date</span
-      >
-      <span th:if="${order.date == null}">Not set</span>
-    </p>
-    <p>
-      <strong>Customer:</strong>
-      <span th:if="${order.customer != null}" th:text="${order.customer.name}"
-      >Customer Name</span
-      >
-      <span th:if="${order.customer == null}">Not assigned</span>
-    </p>
-  </div>
+      <div class="order-info">
+        <p th:text="'Order ID: ' + ${order.id}"></p>
+        <p>
+          <strong>Date:</strong>
+          <span
+            th:if="${order.date != null}"
+            th:text="${#dates.format(order.date.time, 'dd/MM/yyyy HH:mm')}"
+            >Date</span
+          >
+          <span th:if="${order.date == null}">Not set</span>
+        </p>
+        <p>
+          <strong>Customer:</strong>
+          <span
+            th:if="${order.customer != null}"
+            th:text="${order.customer.name}"
+            >Customer Name</span
+          >
+          <span th:if="${order.customer == null}">Not assigned</span>
+        </p>
+      </div>
 
-  <div class="order-lines">
-    <h3>Order Items</h3>
-    <div th:if="${#lists.isEmpty(order.orderLines)}" class="empty-state">
-      <p><em>No items in this order.</em></p>
-    </div>
+      <div class="order-lines">
+        <h3>Order Items</h3>
+        <div th:if="${#lists.isEmpty(order.orderLines)}" class="empty-state">
+          <p><em>No items in this order.</em></p>
+        </div>
 
-    <div th:each="ol : ${order.orderLines}" class="order-line">
-      <div class="product-info">
-        <div class="product-name" th:text="${ol.product.name}">Product</div>
-        <div class="product-details">
-          Quantity:
-          <span th:text="${ol.amount}">1</span> × $<span
+        <div th:each="ol : ${order.orderLines}" class="order-line">
+          <div class="product-info">
+            <div class="product-name" th:text="${ol.product.name}">Product</div>
+            <div class="product-details">
+              Quantity:
+              <span th:text="${ol.amount}">1</span> × $<span
                 th:text="${ol.purchasePrice}"
-        >0.00</span
-        >
+                >0.00</span
+              >
+            </div>
+          </div>
+          <div class="product-total">
+            $<span th:text="${ol.amount * ol.purchasePrice}">0.00</span>
+          </div>
         </div>
       </div>
-      <div class="product-total">
-        $<span th:text="${ol.amount * ol.purchasePrice}">0.00</span>
-      </div>
     </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>
