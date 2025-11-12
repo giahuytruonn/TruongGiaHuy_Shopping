@@ -29,12 +29,4 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderLine> orderLines = new HashSet<>();
 
-    @Column(name = "payment_status")
-    private String paymentStatus = "PENDING"; // PENDING, PAID, FAILED, CANCELLED
-
-    @Column(name = "payos_order_code")
-    private Long payosOrderCode; // Lưu orderCode từ PayOS
-
-    @Column(name = "total_amount", precision = 19, scale = 2)
-    private BigDecimal totalAmount; // Tổng tiền đơn hàng
 }

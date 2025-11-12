@@ -35,30 +35,5 @@ public class OrderService {
         return repository.save(order);
     }
 
-    public Order findByPayosOrderCode(Long payosOrderCode) {
-        return repository.findAll().stream()
-                .filter(order -> order.getPayosOrderCode() != null && 
-                        order.getPayosOrderCode().equals(payosOrderCode))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Transactional
-    public void updatePaymentStatus(Integer orderId, String status) {
-        Order order = findById(orderId);
-        if (order != null) {
-            order.setPaymentStatus(status);
-            repository.save(order);
-        }
-    }
-
-    @Transactional
-    public void updatePaymentStatusByPayosCode(Long payosOrderCode, String status) {
-        Order order = findByPayosOrderCode(payosOrderCode);
-        if (order != null) {
-            order.setPaymentStatus(status);
-            repository.save(order);
-        }
-    }
 
 }
