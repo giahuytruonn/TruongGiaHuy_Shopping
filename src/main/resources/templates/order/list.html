@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order List</title>
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      background-color: #fef6f3;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff6600;
+      font-size: 28px;
+      margin-bottom: 35px;
+    }
+
+    /* Nút quay lại */
+    .back-link {
+      display: inline-block;
+      background-color: #ff6600;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .back-link:hover {
+      background-color: #e55a00;
+      transform: translateY(-2px);
+    }
+
+    /* Thông báo */
+    .alert {
+      padding: 12px 18px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .alert-success {
+      background-color: #e6f9ed;
+      color: #1a7a3d;
+      border: 1px solid #b4e2c1;
+    }
+    .alert-error {
+      background-color: #fdecea;
+      color: #a12b2b;
+      border: 1px solid #f3b6b6;
+    }
+
+    /* Order Card */
+    .order {
+      border: 1px solid #f0f0f0;
+      border-left: 6px solid #ff6600;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      background-color: #fff;
+      transition: all 0.3s ease;
+    }
+    .order:hover {
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ffe5d0;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .order-title {
+      margin: 0;
+      font-size: 20px;
+      color: #ff6600;
+    }
+
+    .order-title:hover {
+      text-decoration: underline;
+    }
+
+    .order-date {
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    /* Info Section */
+    .order-info {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .info-item {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      color: #333;
+      font-size: 15px;
+    }
+
+    .order-lines {
+      margin-top: 15px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+
+    .order-lines h3 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .order-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff7f2;
+      border: 1px solid #ffe1cc;
+      border-radius: 6px;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .product-details {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .product-total {
+      font-weight: bold;
+      color: #ff6600;
+      font-size: 15px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+
+    .empty-state h3 {
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      background-color: #ff6600;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #e55a00;
+      transform: translateY(-2px);
+    }
+
+    /* Tổng tiền nổi bật */
+    .info-value.total {
+      color: #ff6600;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a href="/home" class="back-link">← Quay lại trang chủ</a>
+
+  <h1>Lịch sử đơn hàng</h1>
+
+  <div
+          th:if="${success}"
+          class="alert alert-success"
+          th:text="${success}"
+  ></div>
+  <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+  <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
+    <h3>Chưa có đơn hàng nào</h3>
+    <p>Bạn chưa mua sản phẩm nào. Hãy khám phá thêm nhé!</p>
+    <a href="/product" class="btn">Mua sắm ngay</a>
+  </div>
+
+  <div th:each="order : ${orders}" class="order">
+    <div class="order-header">
+      <a th:href="@{'/order/' + ${order.id}}">
+        <h2 class="order-title" th:text="'Đơn hàng #' + ${order.id}">
+          Order Number
+        </h2>
+      </a>
+      <div class="order-date">
+            <span
+                    th:if="${order.date != null}"
+                    th:text="${#dates.format(order.date.time, 'dd/MM/yyyy HH:mm')}"
+            >Date</span
+            >
+        <span th:if="${order.date == null}">Chưa có ngày tạo</span>
+      </div>
+    </div>
+
+    <div class="order-info">
+      <div class="info-item">
+        <span class="info-label">Khách hàng:</span>
+        <span
+                class="info-value"
+                th:if="${order.customer != null}"
+                th:text="${order.customer.name}"
+        >Customer Name</span
+        >
+        <span class="info-value" th:if="${order.customer == null}"
+        >Không xác định</span
+        >
+      </div>
+      <div class="info-item">
+        <span class="info-label">Số lượng sản phẩm:</span>
+        <span class="info-value" th:text="${#lists.size(order.orderLines)}"
+        >0</span
+        >
+      </div>
+      <div class="info-item">
+        <span class="info-label">Tổng tiền:</span>
+        <span class="info-value total">
+              $<span
+                th:text="${#aggregates.sum(order.orderLines.![purchasePrice * amount])}"
+        >0.00</span
+        >
+            </span>
+      </div>
+    </div>
+
+    <div class="order-lines">
+      <h3>Sản phẩm:</h3>
+      <div th:if="${#lists.isEmpty(order.orderLines)}">
+        <p><em>Không có sản phẩm trong đơn hàng</em></p>
+      </div>
+      <div th:each="ol : ${order.orderLines}" class="order-line">
+        <div>
+          <div class="product-name" th:text="${ol.product.name}">
+            Product Name
+          </div>
+          <div class="product-details">
+            Số lượng:
+            <span th:text="${ol.amount}">1</span> | Giá: $
+            <span th:text="${ol.purchasePrice}">0.00</span>
+          </div>
+        </div>
+        <div class="product-total">
+          $<span th:text="${ol.purchasePrice * ol.amount}">0.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Comment</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fef6f1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff5722;
+      margin-top: 30px;
+      font-size: 28px;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 25px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      resize: vertical;
+      transition: all 0.2s ease;
+    }
+
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #ff5722;
+      box-shadow: 0 0 4px rgba(255, 87, 34, 0.4);
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-save {
+      background-color: #ff5722;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background-color: #e64a19;
+    }
+
+    .btn-cancel {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    .btn-cancel:hover {
+      background-color: #b5b5b5;
+    }
+
+    .form-group .btn {
+      margin-right: 10px;
+    }
+
+    .alert {
+      padding: 12px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+
+    .alert-error {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+
+    @media (max-width: 600px) {
+      .form-container {
+        margin: 20px;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+<h1>Edit Comment</h1>
+
+<div
+        th:if="${success}"
+        class="alert alert-success"
+        th:text="${success}"
+></div>
+<div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+<div class="form-container">
+  <form th:action="@{'/comment/edit/' + ${comment.id}}" method="post">
+    <input type="hidden" name="productId" th:value="${productId}" />
+
+    <div class="form-group">
+      <label for="text">Comment:</label>
+      <textarea
+              id="text"
+              name="text"
+              rows="5"
+              th:text="${comment.text}"
+              required
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-save">💾 Save Changes</button>
+      <a th:href="@{'/product/' + ${productId}}" class="btn btn-cancel"
+      >✖ Cancel</a
+      >
+    </div>
+  </form>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Detail</title>
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+      background-color: #fff;
+      color: #333;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ff6600;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+
+    /* Thông báo */
+    .alert {
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background-color: #e6f9ed;
+      color: #1a7a3d;
+      border: 1px solid #b4e2c1;
+    }
+
+    .alert-error {
+      background-color: #fdecea;
+      color: #a12b2b;
+      border: 1px solid #f3b6b6;
+    }
+
+    /* Nút */
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-buy {
+      background-color: #ff6600;
+      color: white;
+      font-size: 16px;
+    }
+
+    .btn-buy:hover {
+      background-color: #e55a00;
+    }
+
+    .btn-add {
+      background-color: #ff6600;
+      color: white;
+    }
+
+    .btn-edit {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-cancel {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    /* Comment */
+    .comments {
+      margin-top: 40px;
+      border-top: 2px solid #ff6600;
+      padding-top: 15px;
+    }
+
+    .comments h3 {
+      color: #ff6600;
+      margin-bottom: 10px;
+    }
+
+    .comment {
+      border: 1px solid #eee;
+      background-color: #fafafa;
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .comment-actions {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+
+    /* Form thêm comment */
+    .add-comment {
+      margin-top: 25px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .add-comment h3 {
+      margin-bottom: 10px;
+      color: #ff6600;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    /* Phần hành động Admin */
+    .actions {
+      margin-top: 25px;
+    }
+
+    /* Nút về trang chủ */
+    .back-home {
+      display: inline-block;
+      margin-top: 40px;
+      background-color: #ff6600;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .back-home:hover {
+      background-color: #e55a00;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+<h1>Product Detail</h1>
+
+<div
+        th:if="${success}"
+        class="alert alert-success"
+        th:text="${success}"
+></div>
+<div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+<p th:text="'Name: ' + ${product.name}"></p>
+<p th:text="'Price: ' + ${product.price} + ' USD'"></p>
+<p th:text="'In Stock: ' + ${product.inStock ? 'Yes' : 'No'}"></p>
+
+<div
+        sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')"
+        style="margin-top: 20px"
+>
+  <form
+          th:action="@{'/order/buy/' + ${product.id}}"
+          method="post"
+          style="display: inline"
+  >
+    <input type="hidden" name="quantity" value="1" />
+    <button
+            type="submit"
+            class="btn btn-buy"
+            th:disabled="${!product.inStock}"
+    >
+      Add to Cart
+    </button>
+  </form>
+  <a
+          th:href="@{/cart}"
+          class="btn btn-add"
+          style="margin-left: 10px"
+  >
+    View Cart
+  </a>
+</div>
+
+<div sec:authorize="hasRole('ADMIN')" class="actions">
+  <a th:href="@{'/product/edit/' + ${product.id}}" class="btn btn-edit"
+  >Edit Product</a
+  >
+  <form
+          th:action="@{'/product/delete/' + ${product.id}}"
+          method="post"
+          style="display: inline"
+  >
+    <button
+            type="submit"
+            class="btn btn-delete"
+            onclick="return confirm('Are you sure you want to delete this product?')"
+    >
+      Delete Product
+    </button>
+  </form>
+</div>
+
+<div class="comments">
+  <h3>Comments:</h3>
+  <div th:if="${#lists.isEmpty(product.comments)}">
+    <p><em>No comments yet</em></p>
+  </div>
+  <div th:each="c : ${product.comments}" class="comment">
+    <span th:text="${c.text}">Comment Content</span>
+    <div
+            sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')"
+            class="comment-actions"
+    >
+      <a
+              th:href="@{'/comment/edit/' + ${c.id}(productId=${product.id})}"
+              class="btn btn-edit"
+      >Edit</a
+      >
+      <form
+              th:action="@{'/comment/delete/' + ${c.id}}"
+              method="post"
+              style="display: inline"
+      >
+        <input type="hidden" name="productId" th:value="${product.id}" />
+        <button
+                type="submit"
+                class="btn btn-delete"
+                onclick="return confirm('Are you sure you want to delete this comment?')"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')" class="add-comment">
+  <h3>Add New Comment</h3>
+  <form th:action="@{/comment/add}" method="post">
+    <input type="hidden" name="productId" th:value="${product.id}" />
+    <div class="form-group">
+      <label for="text">Comment:</label>
+      <textarea name="text" id="text" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-add">Add Comment</button>
+  </form>
+</div>
+
+<div sec:authorize="!isAuthenticated()" class="add-comment">
+  <h3>Add New Comment</h3>
+  <p>
+    <em>Please <a th:href="@{/login}">login</a> to add comments.</em>
+  </p>
+</div>
+
+<a th:href="@{'/home'}" class="back-home">← Quay lại trang chủ</a>
+</body>
+</html>

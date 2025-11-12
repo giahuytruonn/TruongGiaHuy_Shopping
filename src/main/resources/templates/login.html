@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Shopee Style</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #fef6f4;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 180px;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .container {
+      background-color: #fff;
+      width: 360px;
+      padding: 40px 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.5s ease-in-out;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ee4d2d;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #ee4d2d;
+      box-shadow: 0 0 6px rgba(238, 77, 45, 0.4);
+      outline: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #ee4d2d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background-color: #d8431f;
+      transform: translateY(-2px);
+    }
+
+    .alert {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .alert-danger {
+      background-color: #ffe6e6;
+      color: #c0392b;
+      border: 1px solid #f5c6cb;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .links a {
+      color: #ee4d2d;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="login-wrapper">
+  <img
+          src="../../images/shopping.png"
+          th:src="@{/images/shopping.png}"
+          alt="Logo"
+          class="logo"
+  />
+
+  <div class="container">
+    <h1>Đăng nhập</h1>
+
+    <div th:if="${param.error}" class="alert alert-danger">
+      Sai tên đăng nhập hoặc mật khẩu!
+    </div>
+
+    <div th:if="${param.logout}" class="alert alert-danger">
+      Bạn đã đăng xuất thành công.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+      <div class="form-group">
+        <label for="username">Tên đăng nhập</label>
+        <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Nhập tên đăng nhập..."
+                required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mật khẩu</label>
+        <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Nhập mật khẩu..."
+                required
+        />
+      </div>
+
+      <button type="submit" class="btn">Đăng nhập</button>
+    </form>
+
+    <div class="links">
+      <a th:href="@{/home}">← Quay lại Trang chủ</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

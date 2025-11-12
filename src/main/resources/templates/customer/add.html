@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add Customer</title>
+    <style>
+      body {
+        font-family: Segoe UI, Arial, sans-serif;
+        padding: 20px;
+      }
+      h1 {
+        color: #ee4d2d;
+      }
+      .form {
+        max-width: 420px;
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+      .group {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+      }
+      .error {
+        color: #c0392b;
+        font-size: 13px;
+        margin-top: 4px;
+      }
+      .btn {
+        padding: 10px 14px;
+        background: #ee4d2d;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      a {
+        margin-left: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Add Customer</h1>
+
+    <form
+      class="form"
+      th:action="@{/admin/customers/add}"
+      th:object="${customer}"
+      method="post"
+    >
+      <div class="group">
+        <label>Username</label>
+        <input type="text" th:field="*{username}" />
+      </div>
+
+      <div class="group">
+        <label>Password</label>
+        <input type="password" th:field="*{password}" />
+      </div>
+
+      <div class="group">
+        <label>Name</label>
+        <input
+          type="text"
+          th:field="*{name}"
+          placeholder="Firstname Lastname"
+        />
+      </div>
+
+      <div class="group">
+        <label>Customer Since</label>
+        <input type="date" th:field="*{customerSince}" />
+      </div>
+
+      <button class="btn" type="submit">Save</button>
+      <a th:href="@{/admin/customers}">Back</a>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Shopping Website - Shopee Style</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== GLOBAL RESET ===== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ===== HEADER ===== */
+      header {
+        background-color: #ff5722;
+        color: white;
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+
+      .logo img {
+        width: 45px;
+        height: 45px;
+      }
+
+      .logo span {
+        font-size: 1.6rem;
+        font-weight: 600;
+      }
+
+      /* ===== SEARCH BAR ===== */
+      .search-bar {
+        flex: 1;
+        margin: 0 40px;
+        display: flex;
+        background-color: white;
+        border-radius: 25px;
+        overflow: hidden;
+      }
+
+      .search-bar input {
+        flex: 1;
+        padding: 10px 15px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+      }
+
+      .search-bar button {
+        background-color: #f05a28;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .search-bar button:hover {
+        background-color: #e64a19;
+      }
+
+      /* ===== AUTH LINKS ===== */
+      .auth-links {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .auth-links a {
+        color: white;
+        font-weight: 500;
+        transition: opacity 0.3s;
+      }
+
+      .auth-links a:hover {
+        opacity: 0.8;
+      }
+
+      .cart-icon {
+        background-color: white;
+        color: #ff5722;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        transition: background 0.3s;
+      }
+
+      .cart-icon:hover {
+        background-color: #ffe0d1;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        background-color: white;
+        border-radius: 10px;
+        padding: 40px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .welcome-message {
+        text-align: center;
+        color: #ff5722;
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .date {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+        margin-bottom: 25px;
+      }
+
+      /* ===== MENU ===== */
+      .menu-section {
+        margin-top: 30px;
+      }
+
+      .menu-title {
+        font-size: 1.3rem;
+        color: #444;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .menu-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+      }
+
+      .menu-list a {
+        display: block;
+        text-align: center;
+        background-color: #fff5f0;
+        color: #ff5722;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        padding: 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .menu-list a:hover {
+        background-color: #ff5722;
+        color: white;
+        border-color: #ff7043;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(255, 87, 34, 0.3);
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px;
+        color: #666;
+        font-size: 14px;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          gap: 10px;
+          padding: 15px;
+        }
+
+        .search-bar {
+          margin: 10px 0;
+          width: 100%;
+        }
+
+        .menu-list {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header>
+      <div class="logo" th:href="@{/}">
+        <img
+          src="../../images/shopping.png"
+          th:src="@{/images/shopping.png}"
+          alt="Logo"
+        />
+        <span>ShopNow</span>
+      </div>
+
+      <div class="auth-links">
+        <a th:href="@{/login}" sec:authorize="isAnonymous()">Đăng nhập</a>
+        <a th:href="@{/register}" sec:authorize="isAnonymous()">Đăng ký</a>
+        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Đăng xuất</a>
+
+        <a th:href="@{/cart}" class="cart-icon">🛒</a>
+      </div>
+    </header>
+
+    <div class="container">
+      <h1 th:text="${message}" class="welcome-message">
+        Chào mừng đến ShopNow
+      </h1>
+      <p th:text="${date}" class="date">Ngày hiện tại</p>
+
+      <div class="menu-section">
+        <h3 class="menu-title">Danh mục chức năng</h3>
+        <ul class="menu-list">
+          <li>
+            <a th:href="@{/product}">🛍️ Danh sách sản phẩm</a>
+          </li>
+          <li>
+            <a th:href="@{/chat}">💬 Chat với AI</a>
+          </li>
+          <li sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')">
+            <a th:href="@{/order}">📦 Quản lý đơn hàng</a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/product/add}">➕ Thêm sản phẩm</a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/customers}">👤 Quản lý khách hàng</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      © 2025 ShopNow. Inspired by Shopee.vn — All rights reserved.
+    </footer>
+  </body>
+</html>

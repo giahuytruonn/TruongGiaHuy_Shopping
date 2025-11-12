@@ -1,0 +1,55 @@
+THÔNG TIN VỀ HỆ THỐNG SHOPPING
+
+1. VỀ CỬA HÀNG
+- ShopNow là một cửa hàng trực tuyến chuyên cung cấp các sản phẩm đa dạng
+- Chúng tôi cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng
+- Hỗ trợ khách hàng 24/7 qua hệ thống chat AI
+
+2. CHÍNH SÁCH MUA HÀNG
+- Khách hàng có thể xem danh sách sản phẩm mà không cần đăng nhập
+- Để mua hàng và quản lý đơn hàng, khách hàng cần đăng ký tài khoản
+- Mỗi sản phẩm có thông tin về giá, tình trạng tồn kho (inStock)
+- Khách hàng có thể xem chi tiết sản phẩm và đọc các bình luận từ người dùng khác
+
+3. QUẢN LÝ ĐƠN HÀNG
+- Khách hàng có thể xem lịch sử đơn hàng của mình sau khi đăng nhập
+- Mỗi đơn hàng chứa nhiều sản phẩm (OrderLine)
+- Khách hàng có thể xem chi tiết từng đơn hàng bao gồm ngày đặt hàng và các sản phẩm đã mua
+
+4. BÌNH LUẬN VÀ ĐÁNH GIÁ
+- Khách hàng đã đăng nhập có thể để lại bình luận về sản phẩm
+- Khách hàng có thể chỉnh sửa hoặc xóa bình luận của chính mình
+- Admin có quyền quản lý tất cả bình luận
+
+5. QUYỀN TRUY CẬP
+- Khách hàng thường (CUSTOMER): Có thể mua hàng, xem đơn hàng, bình luận
+- Quản trị viên (ADMIN): Có tất cả quyền của khách hàng, thêm quyền quản lý sản phẩm và khách hàng
+
+6. HƯỚNG DẪN SỬ DỤNG
+- Để tìm kiếm sản phẩm: Sử dụng thanh tìm kiếm hoặc duyệt danh mục sản phẩm
+- Để mua hàng: Thêm sản phẩm vào giỏ hàng và tiến hành thanh toán
+- Để xem đơn hàng: Đăng nhập và vào mục "Quản lý đơn hàng"
+- Để được tư vấn: Sử dụng tính năng Chat với AI
+
+7. FAQ THƯỜNG GẶP
+Q: Làm thế nào để đăng ký tài khoản?
+A: Nhấp vào nút "Đăng ký" ở trang chủ và điền thông tin đầy đủ.
+
+Q: Tôi có thể hủy đơn hàng không?
+A: Vui lòng liên hệ với bộ phận hỗ trợ khách hàng để được hỗ trợ hủy đơn hàng.
+
+Q: Làm sao để biết sản phẩm còn hàng?
+A: Trong trang chi tiết sản phẩm, bạn sẽ thấy trạng thái "Còn hàng" hoặc "Hết hàng".
+
+Q: Tôi có thể xem lịch sử mua hàng không?
+A: Có, sau khi đăng nhập, bạn có thể vào mục "Quản lý đơn hàng" để xem tất cả đơn hàng của mình.
+
+Q: Làm thế nào để liên hệ hỗ trợ?
+A: Bạn có thể sử dụng tính năng Chat với AI trên website để được hỗ trợ ngay lập tức.
+
+8. TÍNH NĂNG AI ASSISTANT
+- Chat với AI để được tư vấn về sản phẩm
+- Hỏi về thông tin đơn hàng của bạn
+- Nhận gợi ý sản phẩm phù hợp
+- Tìm hiểu về chính sách và hướng dẫn mua hàng
+
