@@ -4,7 +4,6 @@ import iuh.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,19 +42,19 @@ public class CartService {
                 CartItem cartItem = new CartItem();
                 cartItem.setProduct(product);
                 cartItem.setQuantity(entry.getValue());
-                cartItem.setTotalPrice(product.getPrice().multiply(BigDecimal.valueOf(entry.getValue())));
+                cartItem.setTotalPrice(product.getPrice() * entry.getValue());
                 cartItems.add(cartItem);
             }
         }
         return cartItems;
     }
 
-    public BigDecimal getCartTotal(Map<Integer, Integer> cart) {
-        BigDecimal total = BigDecimal.ZERO;
+    public double getCartTotal(Map<Integer, Integer> cart) {
+        double total = 0.0;
         for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
             Product product = productService.findById(entry.getKey());
             if (product != null) {
-                total = total.add(product.getPrice().multiply(BigDecimal.valueOf(entry.getValue())));
+                total += product.getPrice() * entry.getValue();
             }
         }
         return total;
@@ -72,7 +71,7 @@ public class CartService {
     public static class CartItem {
         private Product product;
         private Integer quantity;
-        private BigDecimal totalPrice;
+        private Double totalPrice;
 
         public Product getProduct() {
             return product;
@@ -90,11 +89,11 @@ public class CartService {
             this.quantity = quantity;
         }
 
-        public BigDecimal getTotalPrice() {
+        public Double getTotalPrice() {
             return totalPrice;
         }
 
-        public void setTotalPrice(BigDecimal totalPrice) {
+        public void setTotalPrice(Double totalPrice) {
             this.totalPrice = totalPrice;
         }
     }

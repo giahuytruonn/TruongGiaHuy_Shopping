@@ -3,7 +3,6 @@ package iuh.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -22,7 +21,7 @@ public class Product {
 
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
-    private BigDecimal price;
+    private Double price;
 
     private boolean inStock;
 

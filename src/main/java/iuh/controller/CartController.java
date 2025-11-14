@@ -5,11 +5,7 @@ import iuh.model.Order;
 import iuh.model.OrderLine;
 import iuh.model.OrderLineId;
 import iuh.model.Product;
-import iuh.service.CartService;
-import iuh.service.CustomerService;
-import iuh.service.OrderLineService;
-import iuh.service.OrderService;
-import iuh.service.ProductService;
+import iuh.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,11 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.math.BigDecimal;
+import java.util.*;
 
 @Controller
 @RequestMapping("/cart")
@@ -39,10 +31,10 @@ public class CartController {
     private OrderService orderService;
 
     @Autowired
-    private OrderLineService orderLineService;
+    private CustomerService customerService;
 
     @Autowired
-    private CustomerService customerService;
+    private EmailService emailService;
 
     @ModelAttribute("cart")
     public Map<Integer, Integer> initializeCart() {
@@ -130,7 +122,7 @@ public class CartController {
     @PostMapping("/checkout")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     @Transactional
-    public String checkout(@SessionAttribute(value = "cart", required = false) Map<Integer, Integer> cart, Model model, RedirectAttributes redirectAttributes) {
+    public String checkout(@SessionAttribute(value = "cart", required = false) Map<Integer, Integer> cart, Model model, RedirectAttributes redirectAttributes) throws Exception {
 
         if (cart == null || cart.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Cart is empty!");
@@ -147,40 +139,82 @@ public class CartController {
         Calendar currentDate = Calendar.getInstance();
         order.setDate(currentDate);
         order.setCustomer(currentCustomer);
-        order = orderService.save(order);
-
-        int totalItems = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
+        
+        Set<OrderLine> orderLines = new HashSet<>();
 
         for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
             Product product = productService.findById(entry.getKey());
             if (product != null && product.isInStock()) {
-                OrderLineId orderLineId = new OrderLineId();
-                orderLineId.setOrderId(order.getId());
-                orderLineId.setProductId(entry.getKey());
-
                 OrderLine orderLine = new OrderLine();
-                orderLine.setId(orderLineId);
+                orderLine.setId(new OrderLineId());
                 orderLine.setOrder(order);
                 orderLine.setProduct(product);
                 orderLine.setAmount(entry.getValue());
                 orderLine.setPurchasePrice(product.getPrice());
-
-                orderLineService.save(orderLine);
-
-                totalItems += entry.getValue();
-                totalAmount = totalAmount.add(product.getPrice().multiply(BigDecimal.valueOf(entry.getValue())));
+                orderLines.add(orderLine);
             }
         }
+
+        order.setOrderLines(orderLines);
+
+
+        String subject = "Confirming Order #" + currentCustomer.getName();
+
+        StringBuilder content = new StringBuilder();
+
+        content.append("<h2>Hi ").append(currentCustomer.getUsername()).append("!</h2>");
+        content.append("<p>Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi!</p>");
+        content.append("<p><strong>Thông tin đơn hàng:</strong></p>");
+
+        double total = 0;
+
+        content.append("<ul>");
+        for (OrderLine line : orderLines) {
+            double lineTotal = line.getAmount() * line.getPurchasePrice();
+            total += lineTotal;
+
+            content.append("<li>")
+                    .append(line.getProduct().getName())
+                    .append(" — SL: ").append(line.getAmount())
+                    .append(" — Giá: ").append(line.getPurchasePrice())
+                    .append(" — Thành tiền: ").append(lineTotal)
+                    .append("</li>");
+        }
+        content.append("</ul>");
+
+        content.append("<p><strong>Tổng cộng: </strong>").append(total).append(" VND</p>");
+
+        content.append("""
+        <p>Vui lòng thanh toán qua mã QR:</p>
+        <img src="https://img.vietqr.io/image/MB-0862769500-compact.png"
+             alt="QR Code" style="width:250px;" />
+        """);
+
+        content.append("<p>Chúng tôi sẽ liên hệ khi đơn hàng được xử lý.</p>");
+        content.append("<p>Trân trọng,</p>");
+
+        emailService.sendSimpleMail(subject, content.toString());
+
+        orderService.save(order);
 
         cartService.clearCart(cart);
         model.addAttribute("cart", cart);
 
-        String successMessage = String.format("Order placed successfully! Order #%d - %d items - Total: $%.2f", order.getId(), totalItems, totalAmount);
-        redirectAttributes.addFlashAttribute("success", successMessage);
-
         return "redirect:/order";
     }
+
+    @GetMapping("/payment-success")
+    public String paymentSuccess(@RequestParam("orderId") Integer orderId, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("success","Payment successful for order #" + orderId );
+        return "redirect:/home";
+    }
+
+    @GetMapping("/payment-cancel")
+    public String paymentCancel(@RequestParam("orderId") Integer orderId, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error","Payment canceled for order #" + orderId);
+        return "redirect:/order";
+    }
+
 
 
     @PostMapping("/clear")

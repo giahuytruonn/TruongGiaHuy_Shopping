@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.util.*;
-import java.math.BigDecimal;
 
 @Entity
 @Getter

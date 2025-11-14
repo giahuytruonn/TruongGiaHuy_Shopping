@@ -3,8 +3,6 @@ package iuh.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import java.math.BigDecimal;
-
 @Entity
 @Getter
 @Setter
@@ -30,6 +28,5 @@ public class OrderLine {
     private Integer amount;
 
     @NotNull(message = "Purchase price is required")
-    @DecimalMin(value = "0.01", message = "Purchase price must be > 0")
-    private BigDecimal purchasePrice;
+    private Double purchasePrice;
 }

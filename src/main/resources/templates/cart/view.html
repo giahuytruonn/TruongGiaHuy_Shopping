@@ -1,246 +1,246 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8" />
-  <title>Shopping Cart</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 30px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>Shopping Cart</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 30px;
+      }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
 
-    h1 {
-      color: #ff5722;
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2em;
-    }
+      h1 {
+        color: #ff5722;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2em;
+      }
 
-    /* --- ALERT --- */
-    .alert {
-      padding: 15px 20px;
-      border-radius: 6px;
-      margin-bottom: 20px;
-      font-weight: 500;
-    }
+      /* --- ALERT --- */
+      .alert {
+        padding: 15px 20px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
 
-    .alert-success {
-      background-color: #e8f8f0;
-      color: #0f5132;
-      border: 1px solid #badbcc;
-    }
+      .alert-success {
+        background-color: #e8f8f0;
+        color: #0f5132;
+        border: 1px solid #badbcc;
+      }
 
-    .alert-error {
-      background-color: #f8d7da;
-      color: #842029;
-      border: 1px solid #f5c2c7;
-    }
+      .alert-error {
+        background-color: #f8d7da;
+        color: #842029;
+        border: 1px solid #f5c2c7;
+      }
 
-    /* --- EMPTY CART --- */
-    .cart-empty {
-      text-align: center;
-      padding: 60px 20px;
-      color: #666;
-    }
+      /* --- EMPTY CART --- */
+      .cart-empty {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+      }
 
-    .cart-empty h3 {
-      color: #999;
-      margin-bottom: 10px;
-    }
+      .cart-empty h3 {
+        color: #999;
+        margin-bottom: 10px;
+      }
 
-    /* --- TABLE --- */
-    .cart-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 25px;
-    }
+      /* --- TABLE --- */
+      .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 25px;
+      }
 
-    .cart-table th,
-    .cart-table td {
-      padding: 14px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-    }
+      .cart-table th,
+      .cart-table td {
+        padding: 14px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+      }
 
-    .cart-table th {
-      background-color: #fff4ee;
-      color: #ff5722;
-      font-weight: 600;
-      border-top: 2px solid #ff5722;
-    }
+      .cart-table th {
+        background-color: #fff4ee;
+        color: #ff5722;
+        font-weight: 600;
+        border-top: 2px solid #ff5722;
+      }
 
-    .cart-table tr:hover {
-      background-color: #fff8f5;
-    }
+      .cart-table tr:hover {
+        background-color: #fff8f5;
+      }
 
-    .product-info {
-      display: flex;
-      align-items: center;
-    }
+      .product-info {
+        display: flex;
+        align-items: center;
+      }
 
-    .product-name {
-      font-weight: bold;
-      color: #333;
-    }
+      .product-name {
+        font-weight: bold;
+        color: #333;
+      }
 
-    /* --- INPUT --- */
-    .quantity-input {
-      width: 70px;
-      padding: 5px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      text-align: center;
-      font-size: 15px;
-      transition: all 0.2s;
-    }
+      /* --- INPUT --- */
+      .quantity-input {
+        width: 70px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 15px;
+        transition: all 0.2s;
+      }
 
-    .quantity-input:focus {
-      border-color: #ff5722;
-      outline: none;
-      box-shadow: 0 0 3px rgba(255, 87, 34, 0.4);
-    }
+      .quantity-input:focus {
+        border-color: #ff5722;
+        outline: none;
+        box-shadow: 0 0 3px rgba(255, 87, 34, 0.4);
+      }
 
-    /* --- BUTTONS --- */
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
+      /* --- BUTTONS --- */
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
 
-    .btn-primary {
-      background-color: #ff5722;
-      color: white;
-    }
+      .btn-primary {
+        background-color: #ff5722;
+        color: white;
+      }
 
-    .btn-danger {
-      background-color: #f44336;
-      color: white;
-    }
+      .btn-danger {
+        background-color: #f44336;
+        color: white;
+      }
 
-    .btn-success {
-      background-color: #4caf50;
-      color: white;
-    }
+      .btn-success {
+        background-color: #4caf50;
+        color: white;
+      }
 
-    .btn-warning {
-      background-color: #ffc107;
-      color: #212529;
-    }
+      .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+      }
 
-    /* --- CART SUMMARY --- */
-    .cart-summary {
-      background-color: #fff8f5;
-      border: 1px solid #ffe0d5;
-      padding: 20px;
-      border-radius: 8px;
-    }
+      /* --- CART SUMMARY --- */
+      .cart-summary {
+        background-color: #fff8f5;
+        border: 1px solid #ffe0d5;
+        padding: 20px;
+        border-radius: 8px;
+      }
 
-    .cart-total {
-      font-size: 20px;
-      font-weight: bold;
-      color: #ff5722;
-      text-align: right;
-    }
+      .cart-total {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff5722;
+        text-align: right;
+      }
 
-    /* --- ACTIONS --- */
-    .cart-actions {
-      text-align: center;
-      margin-top: 30px;
-    }
+      /* --- ACTIONS --- */
+      .cart-actions {
+        text-align: center;
+        margin-top: 30px;
+      }
 
-    .cart-actions .btn {
-      margin: 0 8px;
-      padding: 12px 26px;
-      font-size: 16px;
-      border-radius: 8px;
-    }
+      .cart-actions .btn {
+        margin: 0 8px;
+        padding: 12px 26px;
+        font-size: 16px;
+        border-radius: 8px;
+      }
 
-    /* --- BACK LINK --- */
-    .back-link {
-      display: inline-block;
-      margin-bottom: 25px;
-      padding: 10px 20px;
-      background-color: #ff5722;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: 0.2s;
-    }
+      /* --- BACK LINK --- */
+      .back-link {
+        display: inline-block;
+        margin-bottom: 25px;
+        padding: 10px 20px;
+        background-color: #ff5722;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: 0.2s;
+      }
 
-    .back-link:hover {
-      background-color: #e64a19;
-    }
-  </style>
-</head>
+      .back-link:hover {
+        background-color: #e64a19;
+      }
+    </style>
+  </head>
 
-<body>
-<div class="container">
-  <a href="/home" class="back-link">← Back to Home</a>
+  <body>
+    <div class="container">
+      <a href="/home" class="back-link">← Back to Home</a>
 
-  <h1>Shopping Cart</h1>
+      <h1>Shopping Cart</h1>
 
-  <div
-          th:if="${success}"
-          class="alert alert-success"
-          th:text="${success}"
-  ></div>
-  <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+      <div
+        th:if="${success}"
+        class="alert alert-success"
+        th:text="${success}"
+      ></div>
+      <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
-  <div th:if="${cartSize == 0 or cartSize == null}" class="cart-empty">
-    <h3>Your cart is empty</h3>
-    <p>Add some products to get started!</p>
-    <a href="/product" class="btn btn-primary">Browse Products</a>
-  </div>
+      <div th:if="${cartSize == 0 or cartSize == null}" class="cart-empty">
+        <h3>Your cart is empty</h3>
+        <p>Add some products to get started!</p>
+        <a href="/product" class="btn btn-primary">Browse Products</a>
+      </div>
 
-  <div th:if="${cartSize > 0}">
-    <table class="cart-table">
-      <thead>
-      <tr>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Total</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="item : ${cartItems}">
-        <td>
-          <div class="product-info">
-            <div class="product-name" th:text="${item.product.name}">
-              Product Name
-            </div>
-          </div>
-        </td>
-        <td th:text="'$' + ${item.product.price}">$0.00</td>
-        <td>
-          <form
+      <div th:if="${cartSize > 0}">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="item : ${cartItems}">
+              <td>
+                <div class="product-info">
+                  <div class="product-name" th:text="${item.product.name}">
+                    Product Name
+                  </div>
+                </div>
+              </td>
+              <td th:text="'$' + ${item.product.price}">$0.00</td>
+              <td>
+                <form
                   th:action="@{'/cart/update/' + ${item.product.id}}"
                   method="post"
                   style="display: inline"
-          >
-            <input
+                >
+                  <input
                     type="number"
                     th:value="${item.quantity}"
                     name="quantity"
@@ -248,65 +248,135 @@
                     max="99"
                     class="quantity-input"
                     onchange="this.form.submit()"
-            />
-          </form>
-        </td>
-        <td th:text="'$' + ${item.totalPrice}">$0.00</td>
-        <td>
-          <form
+                  />
+                </form>
+              </td>
+              <td th:text="'$' + ${item.totalPrice}">$0.00</td>
+              <td>
+                <form
                   th:action="@{'/cart/remove/' + ${item.product.id}}"
                   method="post"
                   style="display: inline"
-          >
-            <button
+                >
+                  <button
                     type="submit"
                     class="btn btn-danger"
                     onclick="return confirm('Are you sure you want to remove this item?')"
-            >
-              Remove
-            </button>
-          </form>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+                  >
+                    Remove
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div class="cart-summary">
-      <div class="cart-total">
-        Total: <span th:text="'$' + ${cartTotal}">$0.00</span>
+        <div class="cart-summary">
+          <div class="cart-total">
+            Total: <span th:text="'$' + ${cartTotal}">$0.00</span>
+          </div>
+        </div>
+
+        <div class="cart-actions">
+          <a href="/product" class="btn btn-primary">Continue Shopping</a>
+
+          <form
+            th:action="@{/cart/clear}"
+            method="post"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-warning">Clear Cart</button>
+          </form>
+
+          <form
+            th:action="@{/cart/checkout}"
+            method="post"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-success">Checkout</button>
+          </form>
+          <!-- Form embed -->
+          <!--      <div id="embeded-payment-container" style="height: 500px; margin-top: 20px;"></div>-->
+          <!--      &lt;!&ndash; PayOS SDK &ndash;&gt;-->
+          <!--      <script src="https://cdn.payos.vn/payos-checkout/v1/stable/payos-initialize.js"></script>-->
+
+          <!--      <script>-->
+          <!--        (function () {-->
+          <!--          const checkoutBtn = document.getElementById("checkoutBtn");-->
+          <!--          const embedContainerId = "embeded-payment-container";-->
+
+          <!--          if (!checkoutBtn) return;-->
+
+          <!--          checkoutBtn.addEventListener("click", async (event) => {-->
+          <!--            event.preventDefault();-->
+
+          <!--            // Disable button + show loading-->
+          <!--            checkoutBtn.disabled = true;-->
+          <!--            const originalText = checkoutBtn.innerText;-->
+          <!--            checkoutBtn.innerText = 'Đang tạo...';-->
+
+          <!--            try {-->
+          <!--              const res = await fetch("/cart/create-payment", {-->
+          <!--                method: "POST",-->
+          <!--                credentials: "same-origin", // GỬI COOKIE để server lấy session (cart, user)-->
+          <!--                headers: {-->
+          <!--                  "Content-Type": "application/json",-->
+          <!--                }-->
+          <!--              });-->
+
+          <!--              if (!res.ok) {-->
+          <!--                const txt = await res.text();-->
+          <!--                throw new Error("Server error: " + txt);-->
+          <!--              }-->
+
+          <!--              const data = await res.json();-->
+
+          <!--              if (data.error) {-->
+          <!--                alert(data.error);-->
+          <!--                return;-->
+          <!--              }-->
+
+          <!--              if (!data.checkoutUrl) {-->
+          <!--                alert("Không nhận được checkoutUrl từ server");-->
+          <!--                return;-->
+          <!--              }-->
+
+          <!--              const config = {-->
+          <!--                CHECKOUT_URL: data.checkoutUrl,-->
+          <!--                ELEMENT_ID: embedContainerId,-->
+          <!--                embedded: true,-->
+          <!--                onSuccess: (evt) => {-->
+          <!--                  // tùy chỉnh: bạn có thể gọi API confirm, hoặc redirect-->
+          <!--                  alert("Thanh toán thành công!");-->
+          <!--                  window.location.href = "/order"; // hoặc /payment/success/...-->
+          <!--                },-->
+          <!--                onCancel: () => {-->
+          <!--                  alert("Đã hủy thanh toán.");-->
+          <!--                  window.location.href = "/cart";-->
+          <!--                },-->
+          <!--                onError: (err) => {-->
+          <!--                  console.error("PayOS error", err);-->
+          <!--                  alert("Lỗi thanh toán: " + (err && err.message ? err.message : "Unknown"));-->
+          <!--                }-->
+          <!--              };-->
+
+          <!--              // Open embedded form-->
+          <!--              const { open } = PayOSCheckout.usePayOS(config);-->
+          <!--              open();-->
+
+          <!--            } catch (err) {-->
+          <!--              console.error(err);-->
+          <!--              alert("Lỗi: " + err.message);-->
+          <!--            } finally {-->
+          <!--              // restore button-->
+          <!--              checkoutBtn.disabled = false;-->
+          <!--              checkoutBtn.innerText = originalText;-->
+          <!--            }-->
+          <!--          });-->
+          <!--        })();-->
+          <!--      </script>-->
+        </div>
       </div>
     </div>
-
-    <div class="cart-actions">
-      <a href="/product" class="btn btn-primary">Continue Shopping</a>
-      <form
-              th:action="@{/cart/clear}"
-              method="post"
-              style="display: inline"
-      >
-        <button
-                type="submit"
-                class="btn btn-warning"
-                onclick="return confirm('Are you sure you want to clear your cart?')"
-        >
-          Clear Cart
-        </button>
-      </form>
-      <form
-              th:action="@{/cart/checkout}"
-              method="post"
-              style="display: inline"
-      >
-        <button
-                type="submit"
-                class="btn btn-success"
-                onclick="return confirm('Proceed to checkout?')"
-        >
-          Checkout
-        </button>
-      </form>
-    </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>
