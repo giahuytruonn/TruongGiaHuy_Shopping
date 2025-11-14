@@ -162,8 +162,25 @@
   <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
   <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
-  <div sec:authorize="hasRole('ADMIN')" style="margin-bottom: 20px">
-    <a href="/product/add" class="btn btn-add">+ Thêm sản phẩm mới</a>
+  <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+    <div sec:authorize="hasRole('ADMIN')">
+      <a href="/product/add" class="btn btn-add">+ Thêm sản phẩm mới</a>
+    </div>
+    <form th:action="@{/product}" method="get" style="display: flex; gap: 10px; align-items: center;">
+      <input 
+        type="text" 
+        name="keyword" 
+        th:value="${keyword != null ? keyword : ''}"
+        placeholder="Tìm kiếm sản phẩm..." 
+        style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; min-width: 250px;"
+      />
+      <button type="submit" class="btn btn-add" style="padding: 8px 16px;">Tìm kiếm</button>
+      <a th:if="${keyword != null && !keyword.isEmpty()}" th:href="@{/product}" class="btn" style="background-color: #6c757d; color: white; padding: 8px 16px;">Xóa</a>
+    </form>
+  </div>
+
+  <div th:if="${keyword != null && !keyword.isEmpty()}" style="margin-bottom: 15px; padding: 10px; background-color: #e3f2fd; border-radius: 4px;">
+    <strong>Kết quả tìm kiếm cho: "<span th:text="${keyword}"></span>"</strong> - Tìm thấy <span th:text="${#lists.size(products)}"></span> sản phẩm
   </div>
 
   <div class="product-list">

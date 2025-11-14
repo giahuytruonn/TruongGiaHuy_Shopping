@@ -41,9 +41,15 @@ public class OrderController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
-    public String showAllOrders(Model model) {
+    public String showAllOrders(@RequestParam(required = false) String keyword, Model model) {
         try {
-            List<Order> orderlist = orderService.findAll();
+            List<Order> orderlist;
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                orderlist = orderService.search(keyword);
+                model.addAttribute("keyword", keyword);
+            } else {
+                orderlist = orderService.findAll();
+            }
             model.addAttribute("orders", orderlist);
             return "order/list";
         } catch (Exception e) {

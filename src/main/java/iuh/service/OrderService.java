@@ -35,5 +35,17 @@ public class OrderService {
         return repository.save(order);
     }
 
+    @Transactional(readOnly = true)
+    public List<Order> search(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return findAll();
+        }
+        List<Order> orders = repository.search(keyword.trim());
+        // Force load orderLines to avoid lazy loading issues
+        for (Order order : orders) {
+            order.getOrderLines().size();
+        }
+        return orders;
+    }
 
 }

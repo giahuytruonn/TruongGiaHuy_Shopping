@@ -35,4 +35,11 @@ public class ProductService {
         return repository.existsById(id);
     }
 
+    public List<Product> search(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return findAll();
+        }
+        return repository.search(keyword.trim());
+    }
+
 }

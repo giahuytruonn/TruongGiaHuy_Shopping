@@ -212,6 +212,24 @@
   ></div>
   <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
 
+  <div style="margin-bottom: 20px;">
+    <form th:action="@{/order}" method="get" style="display: flex; gap: 10px; align-items: center; max-width: 600px;">
+      <input 
+        type="text" 
+        name="keyword" 
+        th:value="${keyword != null ? keyword : ''}"
+        placeholder="Tìm kiếm theo ID, tên khách hàng, username hoặc tên sản phẩm..." 
+        style="flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;"
+      />
+      <button type="submit" class="btn" style="padding: 10px 20px;">Tìm kiếm</button>
+      <a th:if="${keyword != null && !keyword.isEmpty()}" th:href="@{/order}" class="btn" style="background-color: #6c757d; color: white; padding: 10px 20px;">Xóa</a>
+    </form>
+  </div>
+
+  <div th:if="${keyword != null && !keyword.isEmpty()}" style="margin-bottom: 15px; padding: 12px; background-color: #e3f2fd; border-radius: 6px; border-left: 4px solid #2196F3;">
+    <strong>Kết quả tìm kiếm cho: "<span th:text="${keyword}"></span>"</strong> - Tìm thấy <span th:text="${#lists.size(orders)}"></span> đơn hàng
+  </div>
+
   <div th:if="${#lists.isEmpty(orders)}" class="empty-state">
     <h3>Chưa có đơn hàng nào</h3>
     <p>Bạn chưa mua sản phẩm nào. Hãy khám phá thêm nhé!</p>

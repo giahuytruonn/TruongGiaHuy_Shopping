@@ -22,8 +22,14 @@ public class ProductController {
 
 
     @GetMapping
-    public String showAllProducts(Model model) {
-        List<Product> productlist = productService.findAll();
+    public String showAllProducts(@RequestParam(required = false) String keyword, Model model) {
+        List<Product> productlist;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            productlist = productService.search(keyword);
+            model.addAttribute("keyword", keyword);
+        } else {
+            productlist = productService.findAll();
+        }
         model.addAttribute("products", productlist);
         return "product/list";
     }
