@@ -110,12 +110,8 @@ Create a `.env` file in project root:
 
 ```dotenv
 GEMINI_API_KEY=your_gemini_api_key
-CLIENT_ID_PAYOS=your_payos_client_id
-API_KEY=your_payos_api_key
-CHECKSUM_KEY=your_payos_checksum_key
 ```
 
-> Note: AI chat requires `GEMINI_API_KEY`.
 
 ### 6) Configure SMTP (optional but recommended)
 
